@@ -20,9 +20,12 @@ const images = [image1, image2, image3, image4, image5, image6, image7, image8];
 const App = () => {
   const [articles, setArticles] = useState([]);
 
-  const addArticle = (title) => {
+  const addArticle = (formData) => {
     const randomImage = images[Math.floor(Math.random() * images.length)];
-    setArticles([...articles, { id: Date.now(), title, image: randomImage }]);
+    setArticles([
+      ...articles,
+      { ...formData, id: Date.now(), image: formData.image || randomImage },
+    ]);
   };
 
   const deleteArticle = (id) => {
@@ -51,7 +54,23 @@ const App = () => {
                     objectFit: 'cover',
                   }}
                 />
-                {article.title}
+                <div>
+                  <h5>{article.title}</h5>
+                  <p>{article.content}</p>
+                  <p>
+                    <strong>Categoria:</strong> {article.category}
+                  </p>
+                  <p>
+                    <strong>Tags:</strong>{' '}
+                    {Object.keys(article.tags)
+                      .filter((tag) => article.tags[tag])
+                      .join(', ')}
+                  </p>
+                  <p>
+                    <strong>Pubblicato:</strong>{' '}
+                    {article.isPublished ? 'Sì' : 'No'}
+                  </p>
+                </div>
               </div>
               <button
                 className="btn btn-danger btn-sm"
